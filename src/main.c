@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include<string.h>
-#include<stdlib.h>
-#include<ctype.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
 
 struct Token* tokenize(FILE *file);
 char * assemble_tokens(struct Token* tokens);
+char* file_to_str(FILE* file);
 
 enum TokenType {
     RETURN,
@@ -37,7 +38,6 @@ int main(int argc, char* argv[]) {
 
     struct Token* tokens = tokenize(file);
     char* assembly = assemble_tokens(tokens);
-    printf("%s", assembly);
 
     free(tokens);
     fclose(file);
@@ -45,11 +45,19 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 
-struct Token* tokenize(FILE *file) {
-    fseek(file, 0L, SEEK_END);
-    int file_size = ftell(file);
-    rewind(file);
+char* file_to_str(FILE* file) {
+    char * out = "";
+    char ch;
 
+    while(ch != EOF) {
+        ch = fgetc(file);
+        asprintf(&out, "%s%c", out, ch);
+    }
+
+    return out;
+}
+
+struct Token* tokenize(FILE *file) {
     struct Token* tokens = malloc(3 * sizeof(struct Token));
     char* buf = "";
     int tokensIdx = 0;
