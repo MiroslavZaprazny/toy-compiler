@@ -36,6 +36,8 @@ int main(int argc, char* argv[]) {
     }
 
     struct Token* tokens = tokenize(file);
+    char* assembly = assemble_tokens(tokens);
+    printf("%s", assembly);
 
     free(tokens);
     fclose(file);
@@ -51,9 +53,10 @@ struct Token* tokenize(FILE *file) {
     struct Token* tokens = malloc(3 * sizeof(struct Token));
     char* buf = "";
     int tokensIdx = 0;
+    char ch;
 
-    for (int i = 0; i < file_size; i++) {
-        char ch = fgetc(file);
+    while (ch != EOF) {
+        ch = fgetc(file);
 
         if (isalpha(ch)) {
             while(isalpha(ch)) {
@@ -96,7 +99,26 @@ struct Token* tokenize(FILE *file) {
 
 
 char* assemble_tokens(struct Token* tokens) {
-    char* out = "";
+    char* out = "global _start\n_start:";
+    int arr_size = sizeof(&tokens);
+    int tok_size = sizeof(&tokens[0]);
+    int arr_len = sizeof(&tokens) / sizeof(&tokens[0]);
+
+    for (int i = 0; i < arr_len; i++) {
+        struct Token token = tokens[i];
+        switch (token.type) {
+            case RETURN:
+                if (i + 1 < arr_len && tokens[i+1].type != INT_LIT) {
+                    printf("Expected a integer, got %s", tokens[i+1].value);
+                    exit(1);
+                }
+                if (i + 2 < arr_len && tokens[i+2].type != SEMICOLON) {
+                    printf("Expected a semicolon, got %s", tokens[i+1].value);
+                    exit(1);
+                }
+                asprintf(&out, "%s\n\tmov rax, 60\n\tmov rdi, %s\n\tsyscall\n", out, tokens[i+1].value);
+        }
+    }
 
     return out;
 }
