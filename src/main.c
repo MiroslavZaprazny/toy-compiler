@@ -1,23 +1,10 @@
-#include <stdio.h>
 #include <stdbool.h>
-#include <string.h>
 #include <stdlib.h>
-#include <ctype.h>
+#include <stdio.h>
+#include "lexer.h"
 
-struct Token* tokenize(FILE *file);
-char * assemble_tokens(struct Token* tokens);
+char* assemble_tokens(struct Token* tokens);
 char* file_to_str(FILE* file);
-
-enum TokenType {
-    RETURN,
-    SEMICOLON,
-    INT_LIT,
-};
-
-struct Token {
-    enum TokenType type;
-    char* value;
-};
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
@@ -36,7 +23,13 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    struct Token* tokens = tokenize(file);
+    struct Lexer lexer = {file_to_str(file), 0};
+    struct Token* tokens;
+
+    while (true) {
+        struct Token* token = next_token(&lexer);
+    }
+
     char* assembly = assemble_tokens(tokens);
 
     free(tokens);
@@ -49,62 +42,17 @@ char* file_to_str(FILE* file) {
     char * out = "";
     char ch;
 
-    while(ch != EOF) {
+    while (true) {
         ch = fgetc(file);
+        if (ch == EOF) {
+            break;
+        }
+
         asprintf(&out, "%s%c", out, ch);
     }
 
     return out;
 }
-
-struct Token* tokenize(FILE *file) {
-    struct Token* tokens = malloc(3 * sizeof(struct Token));
-    char* buf = "";
-    int tokensIdx = 0;
-    char ch;
-
-    while (ch != EOF) {
-        ch = fgetc(file);
-
-        if (isalpha(ch)) {
-            while(isalpha(ch)) {
-                asprintf(&buf, "%s%c", buf, ch);
-                ch = fgetc(file);
-            }
-
-            fseek(file, -1, SEEK_CUR);
-
-            //TODO: resize array
-            if (strcmp(buf, "return") == 0) {
-                struct Token token = {RETURN, NULL};
-                tokens[tokensIdx] = token;
-                tokensIdx++;
-            }
-
-            buf = "";
-        } else if (isdigit(ch)) {
-            while(isdigit(ch)) {
-                asprintf(&buf, "%s%c", buf, ch);
-                ch = fgetc(file);
-            }
-
-            fseek(file, -1, SEEK_CUR);
-
-            struct Token token = {INT_LIT, buf};
-            tokens[tokensIdx] = token;
-            tokensIdx++;
-
-            buf = "";
-        } else if (ch == ';') {
-            struct Token token = {SEMICOLON, NULL};
-            tokens[tokensIdx] = token;
-            tokensIdx++;
-        }
-    }
-
-    return tokens;
-}
-
 
 char* assemble_tokens(struct Token* tokens) {
     char* out = "global _start\n_start:";
