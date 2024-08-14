@@ -25,9 +25,10 @@ int main(int argc, char* argv[]) {
 
     struct Lexer lexer = {file_to_str(file), 0};
     struct Token* tokens;
+    struct Token token;
 
-    while (true) {
-        struct Token* token = next_token(&lexer);
+    while (token.type != NULL_PTR) {
+        token = next_token(&lexer);
     }
 
     char* assembly = assemble_tokens(tokens);

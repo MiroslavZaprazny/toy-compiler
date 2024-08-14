@@ -2,10 +2,11 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
-struct Token* next_token(struct Lexer* lexer) {
+struct Token next_token(struct Lexer* lexer) {
     char* buf = "";
-    struct Token* token;
+    struct Token token;
 
     skip_whitespace(lexer);
 
@@ -18,7 +19,8 @@ struct Token* next_token(struct Lexer* lexer) {
         lexer->position = lexer->position - 1;
 
         if (strcmp(buf, "return") == 0) {
-            token = (Token) {RETURN, NULL};
+            token.type = RETURN;
+            token.value = NULL;
         }
 
         buf = "";
@@ -32,17 +34,26 @@ struct Token* next_token(struct Lexer* lexer) {
 
         lexer->position = lexer->position - 1;
 
-        token = (Token) {INT_LIT, buf};
+        token.type = INT_LIT;
+        token.value = buf;
 
         buf = "";
 
         return token;
     } else if (lexer->input[lexer->position] == ';') {
-        token = (Token) {SEMICOLON, NULL};
+        token.type = INT_LIT;
+        token.value = buf;
+
         lexer->position++;
 
         return token;
+    } else if (lexer->input[lexer->position] == '\0') {
+        token.type = NULL_PTR;
+        token.value = NULL;
     }
+
+    printf("Could not tokenize '%ch' character", lexer->input[lexer->position]);
+    exit(1);
 }
 
 void skip_whitespace(struct Lexer* lexer) {

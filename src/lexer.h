@@ -2,6 +2,7 @@ enum TokenType {
     RETURN,
     SEMICOLON,
     INT_LIT,
+    NULL_PTR,
 };
 
 struct Token {
@@ -14,5 +15,5 @@ struct Lexer {
     int position;
 };
 
-struct Token* next_token(struct Lexer* lexer);
+struct Token next_token(struct Lexer* lexer);
 void skip_whitespace(struct Lexer* lexer);
