@@ -16,13 +16,13 @@ struct Token next_token(struct Lexer* lexer) {
             lexer->position++;
         }
 
-        lexer->position = lexer->position - 1;
+        //TODO: should we reset the position?
+        // lexer->position = lexer->position - 1;
 
         if (strcmp(buf, "return") == 0) {
             token.type = RETURN;
             token.value = NULL;
         }
-
         buf = "";
 
         return token;
@@ -32,7 +32,7 @@ struct Token next_token(struct Lexer* lexer) {
             lexer->position++;
         }
 
-        lexer->position = lexer->position - 1;
+        // lexer->position = lexer->position - 1;
 
         token.type = INT_LIT;
         token.value = buf;
@@ -41,8 +41,8 @@ struct Token next_token(struct Lexer* lexer) {
 
         return token;
     } else if (lexer->input[lexer->position] == ';') {
-        token.type = INT_LIT;
-        token.value = buf;
+        token.type = SEMICOLON;
+        token.value = NULL;
 
         lexer->position++;
 
@@ -50,9 +50,11 @@ struct Token next_token(struct Lexer* lexer) {
     } else if (lexer->input[lexer->position] == '\0') {
         token.type = NULL_PTR;
         token.value = NULL;
+
+        return token;
     }
 
-    printf("Could not tokenize '%ch' character", lexer->input[lexer->position]);
+    printf("Could not tokenize '%c' character\n", lexer->input[lexer->position]);
     exit(1);
 }
 
