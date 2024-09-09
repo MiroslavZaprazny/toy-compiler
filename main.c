@@ -14,7 +14,6 @@ int main(int argc, char* argv[]) {
     }
 
     char* filename = argv[1];
-
     FILE *file = fopen(filename, "r");
 
     if (file == NULL) {
@@ -27,7 +26,7 @@ int main(int argc, char* argv[]) {
     struct Token* tokens;
     int i = 0;
 
-    while (1) {
+    while (true) {
         tokens[i] = next_token(&lexer);
 
         if (tokens[i].type == _EOF) {
@@ -46,11 +45,10 @@ int main(int argc, char* argv[]) {
 }
 
 char* file_to_str(FILE* file) {
-    char * out = "";
-    char ch;
+    char* out = "";
 
     while (true) {
-        ch = fgetc(file);
+        char ch = fgetc(file);
         if (ch == EOF) {
             break;
         }
@@ -63,23 +61,23 @@ char* file_to_str(FILE* file) {
 
 char* assemble_tokens(struct Token* tokens) {
     char* out = "global _start\n_start:";
-    int arr_size = sizeof(&tokens);
-    int tok_size = sizeof(&tokens[0]);
     int arr_len = sizeof(&tokens) / sizeof(&tokens[0]);
 
     for (int i = 0; i < arr_len; i++) {
         struct Token token = tokens[i];
+
         switch (token.type) {
             case RETURN:
                 if (i + 1 < arr_len && tokens[i+1].type != INT_LIT) {
                     printf("Expected a integer, got %s", tokens[i+1].value);
                     exit(1);
                 }
+
                 if (i + 2 < arr_len && tokens[i+2].type != SEMICOLON) {
                     printf("Expected a semicolon, got %s", tokens[i+2].value);
                     exit(1);
                 }
-                printf("integer value is %s\n", tokens[i+1].value);
+
                 asprintf(&out, "%s\n\tmov rax, 60\n\tmov rdi, %s\n\tsyscall\n", out, tokens[i+1].value);
         }
     }
