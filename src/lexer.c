@@ -48,7 +48,7 @@ struct Token next_token(struct Lexer* lexer) {
 
         return token;
     } else if (lexer->input[lexer->position] == '\0') {
-        token.type = NULL_PTR;
+        token.type = _EOF;
         token.value = NULL;
 
         return token;

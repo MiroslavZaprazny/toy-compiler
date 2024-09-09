@@ -1,7 +1,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "lexer.h"
+#include "src/lexer.h"
 
 char* assemble_tokens(struct Token* tokens);
 char* file_to_str(FILE* file);
@@ -25,15 +25,21 @@ int main(int argc, char* argv[]) {
 
     struct Lexer lexer = {file_to_str(file), 0};
     struct Token* tokens;
-    struct Token token;
+    int i = 0;
 
-    while (token.type != NULL_PTR) {
-        token = next_token(&lexer);
+    while (1) {
+        tokens[i] = next_token(&lexer);
+
+        if (tokens[i].type == _EOF) {
+            break;
+        }
+
+        i++;
     }
 
     char* assembly = assemble_tokens(tokens);
+    printf("%s", assembly);
 
-    free(tokens);
     fclose(file);
 
     return 0;
@@ -70,9 +76,10 @@ char* assemble_tokens(struct Token* tokens) {
                     exit(1);
                 }
                 if (i + 2 < arr_len && tokens[i+2].type != SEMICOLON) {
-                    printf("Expected a semicolon, got %s", tokens[i+1].value);
+                    printf("Expected a semicolon, got %s", tokens[i+2].value);
                     exit(1);
                 }
+                printf("integer value is %s\n", tokens[i+1].value);
                 asprintf(&out, "%s\n\tmov rax, 60\n\tmov rdi, %s\n\tsyscall\n", out, tokens[i+1].value);
         }
     }

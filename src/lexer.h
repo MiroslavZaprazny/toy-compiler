@@ -2,7 +2,7 @@ enum TokenType {
     RETURN,
     SEMICOLON,
     INT_LIT,
-    NULL_PTR,
+    _EOF,
 };
 
 struct Token {

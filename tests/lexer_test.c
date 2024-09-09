@@ -14,8 +14,8 @@ char* token_type_to_str(enum TokenType type) {
             return "int literal";
         case SEMICOLON:
             return "semicolon";
-        case NULL_PTR:
-            return "null pointer";
+        case _EOF:
+            return "eof";
     }
 }
 
@@ -57,7 +57,7 @@ TEST(tokenize_valid_return_statement) {
     }
 
     struct Token eof = next_token(&lexer);
-    if (eof.type != NULL_PTR) {
+    if (eof.type != _EOF) {
         printf("Expected token type '%s' got '%s'\n", "EOF", token_type_to_str(eof.type));
         exit(1);
     }
