@@ -10,14 +10,11 @@ struct Token next_token(struct Lexer* lexer) {
 
     skip_whitespace(lexer);
 
-    if (isalpha(lexer->input[lexer->position])) {
-        while(isalnum(lexer->input[lexer->position])) {
-            asprintf(&buf, "%s%c", buf, lexer->input[lexer->position]);
+    if (isalpha(peek(lexer)) {
+        while(isalnum(peek(lexer)) {
+            asprintf(&buf, "%s%c", buf, peek(lexer));
             lexer->position++;
         }
-
-        //TODO: should we reset the position?
-        // lexer->position = lexer->position - 1;
 
         if (strcmp(buf, "return") == 0) {
             token.type = RETURN;
@@ -26,13 +23,11 @@ struct Token next_token(struct Lexer* lexer) {
         buf = "";
 
         return token;
-    } else if (isdigit(lexer->input[lexer->position])) {
-        while(isdigit(lexer->input[lexer->position])) {
-            asprintf(&buf, "%s%c", buf, lexer->input[lexer->position]);
+    } else if (isdigit(peek(lexer)) {
+        while(isdigit(peek(lexer)) {
+            asprintf(&buf, "%s%c", buf, peek(lexer));
             lexer->position++;
         }
-
-        // lexer->position = lexer->position - 1;
 
         token.type = INT_LIT;
         token.value = buf;
@@ -40,22 +35,26 @@ struct Token next_token(struct Lexer* lexer) {
         buf = "";
 
         return token;
-    } else if (lexer->input[lexer->position] == ';') {
+    } else if (peek(lexer) == ';') {
         token.type = SEMICOLON;
         token.value = NULL;
 
         lexer->position++;
 
         return token;
-    } else if (lexer->input[lexer->position] == '\0') {
+    } else if (peek(lexer) == '\0') {
         token.type = _EOF;
         token.value = NULL;
 
         return token;
     }
 
-    printf("Could not tokenize '%c' character\n", lexer->input[lexer->position]);
+    printf("Could not tokenize '%c' character\n", peek(lexer));
     exit(1);
+}
+
+char peek(struct Lexer* lexer) {
+    return lexer->input[lexer->position];
 }
 
 void skip_whitespace(struct Lexer* lexer) {
