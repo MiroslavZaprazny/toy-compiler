@@ -10,8 +10,8 @@ struct Token next_token(struct Lexer* lexer) {
 
     skip_whitespace(lexer);
 
-    if (isalpha(peek(lexer)) {
-        while(isalnum(peek(lexer)) {
+    if (isalpha(peek(lexer))) {
+        while(isalnum(peek(lexer))) {
             asprintf(&buf, "%s%c", buf, peek(lexer));
             lexer->position++;
         }
@@ -23,8 +23,8 @@ struct Token next_token(struct Lexer* lexer) {
         buf = "";
 
         return token;
-    } else if (isdigit(peek(lexer)) {
-        while(isdigit(peek(lexer)) {
+    } else if (isdigit(peek(lexer))) {
+        while(isdigit(peek(lexer))) {
             asprintf(&buf, "%s%c", buf, peek(lexer));
             lexer->position++;
         }

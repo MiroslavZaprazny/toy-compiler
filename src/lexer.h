@@ -1,3 +1,5 @@
+#pragma once
+
 enum TokenType {
     RETURN,
     SEMICOLON,
@@ -17,3 +19,4 @@ struct Lexer {
 
 struct Token next_token(struct Lexer* lexer);
 void skip_whitespace(struct Lexer* lexer);
+char peek(struct Lexer* lexer);

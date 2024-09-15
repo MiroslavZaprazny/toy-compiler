@@ -1,25 +1,38 @@
-#include "parser.h"
-#include "lexer.h"
+#include"parser.h"
+#include"lexer.h"
+#include <stdlib.h>
+#include <stdio.h>
 
-struct ReturnStatement* parse(struct Parser* parser) {
-    if (next_token(parser->lexer).type == TokenType::RETURN) {
-        ReturnStatement stmt;
-        int_lit = next_token(parser->lexer);
+void* parse(struct Parser* parser) {
+    struct Token token = next_token(parser->lexer);
 
-        if (int_lit != TokenType::INT_LIT) {
-            printf("Expected a integer literal after the 'reutrn' keyword got: %s", int_lit.value) // we should probably print the token type instead of the token value
+    if (token.type == RETURN) {
+        struct ReturnStatement* stmt = malloc(sizeof(struct ReturnStatement));
+        if (stmt == NULL) {
+            printf("Failed to allocate memory for the return statement structure\n");
             exit(1);
         }
 
-        semi = next_token(parser->lexer);
-        if (semi != TokenType::SEMICOLON) {
-            printf("Expected a semicolon got: %s", int_lit.value) // we should probably print the token type instead of the token value
+        struct Token int_lit_token = next_token(parser->lexer);
+
+        if (int_lit_token.type != INT_LIT) {
+            printf("Expected a integer literal after the 'reutrn' keyword got: %s\n", int_lit_token.value); // we should probably print the token type instead of the token value
             exit(1);
         }
 
-        Expression expression = {int_lit}:
-        stmt.expression = &expression;
+        struct Token semi_token = next_token(parser->lexer);
+        if (semi_token.type != SEMICOLON) {
+            printf("Expected a semicolon got: %s\n", semi_token.value); // we should probably print the token type instead of the token value
+            exit(1);
+        }
 
-        return stmt;
+        struct Expression expression = {atoi(int_lit_token.value)};
+        stmt->expression = expression;
+        stmt->token = token;
+
+        return (void*)stmt;
     }
+
+    printf("Unexpected token: %s\n", token.value);
+    exit(1);
 }

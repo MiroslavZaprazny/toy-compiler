@@ -1,3 +1,5 @@
+#pragma once
+
 #include "lexer.h"
 
 struct Expression {
@@ -5,16 +7,13 @@ struct Expression {
 };
 
 struct ReturnStatement {
-    Token* token;
-    Expression* expression;
+    struct Token token; // do we even need this?
+    struct Expression expression;
 };
 
 struct Parser {
-    Lexer* lexer;
+    struct Lexer* lexer;
 };
 
 void* parse(struct Parser* parser);
 
-// struct ParseTree {
-//     void* expressions;
-// };
