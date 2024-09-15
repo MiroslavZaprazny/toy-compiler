@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "src/lexer.h"
+#include "src/parser.h"
+#include "src/generator.h"
 
 char* assemble_tokens(struct Token* tokens);
 char* file_to_str(FILE* file);
@@ -23,23 +25,12 @@ int main(int argc, char* argv[]) {
     }
 
     struct Lexer lexer = {file_to_str(file), 0};
-    struct Token* tokens;
-    int i = 0;
+    struct Parser parser = {&lexer};
+    struct ReturnStatement* return_stmt = (struct ReturnStatement*) parse(&parser);
+    struct Generator generator = {return_stmt};
 
-    while (true) {
-        tokens[i] = next_token(&lexer);
-
-        if (tokens[i].type == _EOF) {
-            break;
-        }
-
-        i++;
-    }
-
-    char* assembly = assemble_tokens(tokens);
+    char* assembly = generate(&generator);
     printf("%s", assembly);
-
-    fclose(file);
 
     return 0;
 }
@@ -56,31 +47,7 @@ char* file_to_str(FILE* file) {
         asprintf(&out, "%s%c", out, ch);
     }
 
-    return out;
-}
-
-char* assemble_tokens(struct Token* tokens) {
-    char* out = "global _start\n_start:";
-    int arr_len = sizeof(&tokens) / sizeof(&tokens[0]);
-
-    for (int i = 0; i < arr_len; i++) {
-        struct Token token = tokens[i];
-
-        switch (token.type) {
-            case RETURN:
-                if (i + 1 < arr_len && tokens[i+1].type != INT_LIT) {
-                    printf("Expected a integer, got %s", tokens[i+1].value);
-                    exit(1);
-                }
-
-                if (i + 2 < arr_len && tokens[i+2].type != SEMICOLON) {
-                    printf("Expected a semicolon, got %s", tokens[i+2].value);
-                    exit(1);
-                }
-
-                asprintf(&out, "%s\n\tmov rax, 60\n\tmov rdi, %s\n\tsyscall\n", out, tokens[i+1].value);
-        }
-    }
+    fclose(file);
 
     return out;
 }

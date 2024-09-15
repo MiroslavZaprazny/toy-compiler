@@ -26,6 +26,7 @@ TEST(test_parse_valid_return_statement) {
 
 int main() {
     RUN_TEST(test_parse_valid_return_statement);
+    //TODO: add test for invalid cases
 
     return 0;
 }
