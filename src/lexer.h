@@ -1,22 +1,22 @@
 #pragma once
 
-enum TokenType {
-    RETURN,
-    SEMICOLON,
-    INT_LIT,
-    _EOF,
-};
+typedef enum TokenType {
+    TOKEN_RETURN,
+    TOKEN_SEMICOLON,
+    TOKEN_INT_LIT,
+    TOKEN_EOF,
+} TokenType;
 
-struct Token {
+typedef struct Token {
     enum TokenType type;
     char* value;
-};
+} Token;
 
-struct Lexer {
+typedef struct Lexer {
     char* input;
     int position;
-};
+} Lexer;
 
-struct Token next_token(struct Lexer* lexer);
-void skip_whitespace(struct Lexer* lexer);
-char peek(struct Lexer* lexer);
+Token next_token(Lexer* lexer);
+void skip_whitespace(Lexer* lexer);
+char peek(Lexer* lexer);

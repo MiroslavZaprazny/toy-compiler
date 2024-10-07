@@ -1,6 +1,6 @@
 #include"../src/lexer.h"
 
-char* token_type_to_str(enum TokenType type) {
+char* token_type_to_str(TokenType type) {
     switch(type) {
         case RETURN:
             return "return";

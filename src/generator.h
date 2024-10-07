@@ -1,8 +1,8 @@
 #pragma once
 #include "parser.h"
 
-struct Generator {
-    struct ReturnStatement* stmt; // for now we just support return statements
-};
+typedef struct Generator {
+    Ast* ast
+} Generator;
 
-char* generate(struct Generator* generator);
+char* generate(Generator* generator);

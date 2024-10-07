@@ -6,10 +6,10 @@
 TEST(test_parse_valid_return_statement) {
     char* input = "return 69;";
 
-    struct Lexer lexer = {input, 0};
-    struct Parser parser = {&lexer};
+    Lexer lexer = {input, 0};
+    Parser parser = {&lexer};
 
-    struct ReturnStatement* return_stmt = (struct ReturnStatement*) parse(&parser);
+    ReturnStatement* return_stmt = (struct ReturnStatement*) parse(&parser);
 
     if (return_stmt->token.type != RETURN) {
         printf("Expected token type '%s' got '%s'\n", "return", token_type_to_str(return_stmt->token.type));

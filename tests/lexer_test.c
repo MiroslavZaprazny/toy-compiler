@@ -6,9 +6,9 @@
 
 TEST(tokenize_valid_return_statement) {
     char* input = "return 60;";
-    struct Lexer lexer = {input, 0};
+    Lexer lexer = {input, 0};
 
-    struct Token return_token = next_token(&lexer);
+    Token return_token = next_token(&lexer);
     if (return_token.type != RETURN) {
         printf("Expected token type '%s' got '%s'\n", "return", token_type_to_str(return_token.type));
         exit(1);
@@ -19,7 +19,7 @@ TEST(tokenize_valid_return_statement) {
         exit(1);
     }
 
-    struct Token int_token = next_token(&lexer);
+    Token int_token = next_token(&lexer);
     if (int_token.type != INT_LIT) {
         printf("Expected token type '%s' got '%s'\n", "int literal", token_type_to_str(int_token.type));
         exit(1);
@@ -30,7 +30,7 @@ TEST(tokenize_valid_return_statement) {
         exit(1);
     }
 
-    struct Token semi = next_token(&lexer);
+    Token semi = next_token(&lexer);
     if (semi.type != SEMICOLON) {
         printf("Expected token type '%s' got '%s'\n", "semicolon", token_type_to_str(semi.type));
         exit(1);
@@ -41,7 +41,7 @@ TEST(tokenize_valid_return_statement) {
         exit(1);
     }
 
-    struct Token eof = next_token(&lexer);
+    Token eof = next_token(&lexer);
     if (eof.type != _EOF) {
         printf("Expected token type '%s' got '%s'\n", "EOF", token_type_to_str(eof.type));
         exit(1);

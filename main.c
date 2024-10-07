@@ -5,7 +5,7 @@
 #include "src/parser.h"
 #include "src/generator.h"
 
-char* assemble_tokens(struct Token* tokens);
+char* assemble_tokens(Token* tokens);
 char* file_to_str(FILE* file);
 
 int main(int argc, char* argv[]) {
@@ -24,10 +24,11 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    struct Lexer lexer = {file_to_str(file), 0};
-    struct Parser parser = {&lexer};
-    struct ReturnStatement* return_stmt = (struct ReturnStatement*) parse(&parser);
-    struct Generator generator = {return_stmt};
+    Lexer lexer = {file_to_str(file), 0};
+    Parser parser = {&lexer};
+    ReturnStatement* return_stmt = (struct ReturnStatement*) parse(&parser);
+    // free_tree(head)
+    Generator generator = {return_stmt};
 
     char* assembly = generate(&generator);
     printf("%s", assembly);

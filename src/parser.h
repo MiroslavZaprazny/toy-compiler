@@ -2,18 +2,30 @@
 
 #include "lexer.h"
 
-struct Expression {
-    int int_lit; // for now we just support expressions that only contain a single integer literal
-};
+typedef union NodeValue {
+    int int_literal;
+} NodeValue;
 
-struct ReturnStatement {
-    struct Token token; // do we even need this?
-    struct Expression expression;
-};
+typedef enum NodeType {
+    NODE_RETURN;
+} NodeType;
 
-struct Parser {
-    struct Lexer* lexer;
-};
+typedef struct Ast {
+    childern *Node;
+    int len;
+} Head;
 
-void* parse(struct Parser* parser);
+typedef struct Node {
+    NodeValue value;
+    NodeType type;
+    // Node* expr;
+    // Node* right;
+    // Node* left;
+} Node;
+
+typedef struct Parser {
+    Lexer* lexer;
+} Parser;
+
+Ast* parse(Parser* parser);
 

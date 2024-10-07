@@ -4,9 +4,9 @@
 #include <string.h>
 #include <stdlib.h>
 
-struct Token next_token(struct Lexer* lexer) {
+Token next_token(Lexer* lexer) {
     char* buf = "";
-    struct Token token;
+    Token token;
 
     skip_whitespace(lexer);
 
@@ -53,11 +53,11 @@ struct Token next_token(struct Lexer* lexer) {
     exit(1);
 }
 
-char peek(struct Lexer* lexer) {
+char peek(Lexer* lexer) {
     return lexer->input[lexer->position];
 }
 
-void skip_whitespace(struct Lexer* lexer) {
+void skip_whitespace(Lexer* lexer) {
     if (isspace(lexer->input[lexer->position])) {
         lexer->position++;
     }
