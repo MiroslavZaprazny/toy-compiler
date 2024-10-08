@@ -49,3 +49,13 @@ Ast* parse(Parser* parser) {
         exit(1);
     }
 }
+
+void free_tree(Ast* ast) {
+    for (int i = 0; i < ast->len; i++) {
+        //TODO: in the future we will need to also free up nested nodes
+        Node* node = &ast->children[i];
+        free(node);
+    }
+
+    free(ast);
+}

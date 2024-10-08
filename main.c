@@ -27,10 +27,11 @@ int main(int argc, char* argv[]) {
     Lexer lexer = {file_to_str(file), 0};
     Parser parser = {&lexer};
     Ast* ast = parse(&parser);
-    // free_tree(head)
     Generator generator = {ast};
 
     char* assembly = generate(&generator);
+    free_tree(ast);
+
     printf("%s", assembly);
 
     return 0;

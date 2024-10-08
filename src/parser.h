@@ -29,3 +29,5 @@ typedef struct Parser {
 
 Ast* parse(Parser* parser);
 
+void free_tree(Ast* ast);
+
