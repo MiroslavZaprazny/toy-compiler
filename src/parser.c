@@ -5,8 +5,10 @@
 
 Ast* parse(Parser* parser) {
     Ast* ast = malloc(sizeof(Ast));
-    ast->children = malloc(sizeof(Node) * 5);
+    ast->len = 1;
+    ast->children = malloc(sizeof(Node) * ast->len); //TODO: We should probably allocate more memory?
 
+    // Todo: Implement realocating the children when we reach the capacity
     int i = 0;
     while (1) {
         Token token = next_token(parser->lexer);
