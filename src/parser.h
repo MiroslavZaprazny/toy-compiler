@@ -7,13 +7,8 @@ typedef union NodeValue {
 } NodeValue;
 
 typedef enum NodeType {
-    NODE_RETURN;
+    NODE_RETURN,
 } NodeType;
-
-typedef struct Ast {
-    childern *Node;
-    int len;
-} Head;
 
 typedef struct Node {
     NodeValue value;
@@ -22,6 +17,11 @@ typedef struct Node {
     // Node* right;
     // Node* left;
 } Node;
+
+typedef struct Ast {
+    Node* children;
+    int len;
+} Ast;
 
 typedef struct Parser {
     Lexer* lexer;

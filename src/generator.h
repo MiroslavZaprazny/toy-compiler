@@ -2,7 +2,7 @@
 #include "parser.h"
 
 typedef struct Generator {
-    Ast* ast
+    Ast* ast;
 } Generator;
 
 char* generate(Generator* generator);

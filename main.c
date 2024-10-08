@@ -26,9 +26,9 @@ int main(int argc, char* argv[]) {
 
     Lexer lexer = {file_to_str(file), 0};
     Parser parser = {&lexer};
-    ReturnStatement* return_stmt = (struct ReturnStatement*) parse(&parser);
+    Ast* ast = parse(&parser);
     // free_tree(head)
-    Generator generator = {return_stmt};
+    Generator generator = {ast};
 
     char* assembly = generate(&generator);
     printf("%s", assembly);

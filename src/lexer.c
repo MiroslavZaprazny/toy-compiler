@@ -17,7 +17,7 @@ Token next_token(Lexer* lexer) {
         }
 
         if (strcmp(buf, "return") == 0) {
-            token.type = RETURN;
+            token.type = TOKEN_RETURN;
             token.value = NULL;
         }
         buf = "";
@@ -29,21 +29,21 @@ Token next_token(Lexer* lexer) {
             lexer->position++;
         }
 
-        token.type = INT_LIT;
+        token.type = TOKEN_INT_LIT;
         token.value = buf;
 
         buf = "";
 
         return token;
     } else if (peek(lexer) == ';') {
-        token.type = SEMICOLON;
+        token.type = TOKEN_SEMICOLON;
         token.value = NULL;
 
         lexer->position++;
 
         return token;
     } else if (peek(lexer) == '\0') {
-        token.type = _EOF;
+        token.type = TOKEN_EOF;
         token.value = NULL;
 
         return token;
