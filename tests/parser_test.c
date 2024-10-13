@@ -9,19 +9,26 @@ TEST(test_parse_valid_return_statement) {
     Lexer lexer = {input, 0};
     Parser parser = {&lexer};
 
-    ReturnStatement* return_stmt = (struct ReturnStatement*) parse(&parser);
+    Ast* ast = parse(&parser);
 
-    if (return_stmt->token.type != RETURN) {
-        printf("Expected token type '%s' got '%s'\n", "return", token_type_to_str(return_stmt->token.type));
+    if (ast->len != 1) {
+        printf("Expected ast len to be of size %d got %d\n", 1, ast->len);
         exit(1);
     }
 
-    if (return_stmt->expression.int_lit != 69) {
-        printf("Expected a integer literal '69' got '%s'\n", token_type_to_str(return_stmt->token.type));
+    Node node = ast->children[0];
+
+    if (node.type != NODE_RETURN) {
+        printf("Expected type '%s' got '%s'\n", "return", node_type_to_str(node.type));
         exit(1);
     }
 
-    free(return_stmt);
+    if (node.value.int_literal != 69) {
+        printf("Expected a integer literal 69 got %d\n", node.value.int_literal);
+        exit(1);
+    }
+
+    free_tree(ast);
 }
 
 int main() {

@@ -9,7 +9,7 @@ TEST(tokenize_valid_return_statement) {
     Lexer lexer = {input, 0};
 
     Token return_token = next_token(&lexer);
-    if (return_token.type != RETURN) {
+    if (return_token.type != TOKEN_RETURN) {
         printf("Expected token type '%s' got '%s'\n", "return", token_type_to_str(return_token.type));
         exit(1);
     }
@@ -20,7 +20,7 @@ TEST(tokenize_valid_return_statement) {
     }
 
     Token int_token = next_token(&lexer);
-    if (int_token.type != INT_LIT) {
+    if (int_token.type != TOKEN_INT_LIT) {
         printf("Expected token type '%s' got '%s'\n", "int literal", token_type_to_str(int_token.type));
         exit(1);
     }
@@ -31,7 +31,7 @@ TEST(tokenize_valid_return_statement) {
     }
 
     Token semi = next_token(&lexer);
-    if (semi.type != SEMICOLON) {
+    if (semi.type != TOKEN_SEMICOLON) {
         printf("Expected token type '%s' got '%s'\n", "semicolon", token_type_to_str(semi.type));
         exit(1);
     }
@@ -42,7 +42,7 @@ TEST(tokenize_valid_return_statement) {
     }
 
     Token eof = next_token(&lexer);
-    if (eof.type != _EOF) {
+    if (eof.type != TOKEN_EOF) {
         printf("Expected token type '%s' got '%s'\n", "EOF", token_type_to_str(eof.type));
         exit(1);
     }
