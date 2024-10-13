@@ -2,29 +2,14 @@
 #include<stdlib.h>
 #include<string.h>
 #include"../src/lexer.h"
-
-#define TEST(name) void name()
-#define RUN_TEST(name) printf("Running test: %s \n", #name); name(); printf("Test passed\n")
-
-char* token_type_to_str(enum TokenType type) {
-    switch(type) {
-        case RETURN:
-            return "return";
-        case INT_LIT:
-            return "int literal";
-        case SEMICOLON:
-            return "semicolon";
-        case _EOF:
-            return "eof";
-    }
-}
+#include"util.h"
 
 TEST(tokenize_valid_return_statement) {
     char* input = "return 60;";
-    struct Lexer lexer = {input, 0};
+    Lexer lexer = {input, 0};
 
-    struct Token return_token = next_token(&lexer);
-    if (return_token.type != RETURN) {
+    Token return_token = next_token(&lexer);
+    if (return_token.type != TOKEN_RETURN) {
         printf("Expected token type '%s' got '%s'\n", "return", token_type_to_str(return_token.type));
         exit(1);
     }
@@ -34,8 +19,8 @@ TEST(tokenize_valid_return_statement) {
         exit(1);
     }
 
-    struct Token int_token = next_token(&lexer);
-    if (int_token.type != INT_LIT) {
+    Token int_token = next_token(&lexer);
+    if (int_token.type != TOKEN_INT_LIT) {
         printf("Expected token type '%s' got '%s'\n", "int literal", token_type_to_str(int_token.type));
         exit(1);
     }
@@ -45,8 +30,8 @@ TEST(tokenize_valid_return_statement) {
         exit(1);
     }
 
-    struct Token semi = next_token(&lexer);
-    if (semi.type != SEMICOLON) {
+    Token semi = next_token(&lexer);
+    if (semi.type != TOKEN_SEMICOLON) {
         printf("Expected token type '%s' got '%s'\n", "semicolon", token_type_to_str(semi.type));
         exit(1);
     }
@@ -56,8 +41,8 @@ TEST(tokenize_valid_return_statement) {
         exit(1);
     }
 
-    struct Token eof = next_token(&lexer);
-    if (eof.type != _EOF) {
+    Token eof = next_token(&lexer);
+    if (eof.type != TOKEN_EOF) {
         printf("Expected token type '%s' got '%s'\n", "EOF", token_type_to_str(eof.type));
         exit(1);
     }
